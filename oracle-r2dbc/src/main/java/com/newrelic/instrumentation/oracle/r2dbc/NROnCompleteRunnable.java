@@ -2,7 +2,6 @@ package com.newrelic.instrumentation.oracle.r2dbc;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import com.newrelic.api.agent.DatastoreParameters;
 import com.newrelic.api.agent.DatastoreParameters.DatabaseParameter;
@@ -57,13 +56,7 @@ public class NROnCompleteRunnable implements Runnable {
 				slowQuery = db_params.noDatabaseName();
 			}
 
-			QueryConverter<String> converter = Utils.getQueryConverter();
-			NewRelic.getAgent().getLogger().log(Level.FINE, "Result of creating query converter is {0}",converter);
-			String raw = converter.toRawQueryString(sql);
-			NewRelic.getAgent().getLogger().log(Level.FINE, "query converter raw {0}",raw);
-			String obfuscated = converter.toObfuscatedQueryString(sql);
-			NewRelic.getAgent().getLogger().log(Level.FINE, "query converter obfuscated {0}",obfuscated);
-			
+			QueryConverter<String> converter = Utils.getQueryConverter();			
 			Utils.addAttribute(attributes,"QueryConverter",converter);
  			DatastoreParameters params = slowQuery.slowQuery(sql, converter).build();
  			
